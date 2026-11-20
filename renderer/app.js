@@ -268,7 +268,10 @@ function updateAddressBar(url) {
 async function init() {
   const model = await window.electronAPI.getModel();
   const sm = $('sel-model');
-  if (sm && model) sm.value = model;
+  if (sm && model) {
+    if (![...sm.options].some(option => option.value === model)) sm.add(new Option(model, model));
+    sm.value = model;
+  }
 
   const apiKey = await window.electronAPI.getApiKey();
   if (apiKey) { const ki = $('input-api-key'); if (ki) ki.value = '••••••••••••'; }
@@ -1675,7 +1678,7 @@ $('btn-save-key').addEventListener('click', async () => {
 });
 
 $('sel-model').addEventListener('change', async e => { await window.electronAPI.setModel(e.target.value); });
-$('link-mistral').addEventListener('click', e => { e.preventDefault(); window.electronAPI.openExternal('https://console.mistral.ai'); });
+$('link-mistral').addEventListener('click', e => { e.preventDefault(); window.electronAPI.openExternal('https://openrouter.ai/keys'); });
 
 // Tavily key
 const btnSaveTavily = $('btn-save-tavily-key');

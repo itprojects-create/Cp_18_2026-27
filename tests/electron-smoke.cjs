@@ -6,10 +6,11 @@ const fs = require('node:fs');
 const testDir = fs.mkdtempSync(path.join(os.tmpdir(), 'ishaara-smoke-'));
 app.setPath('userData', testDir);
 process.env.ISHAARA_CONFIG_PATH = path.join(testDir, '.env');
-fs.writeFileSync(process.env.ISHAARA_CONFIG_PATH, 'MISTRAL_API_KEY=test-key\nMISTRAL_MODEL=mistral-small-latest\n');
+fs.writeFileSync(process.env.ISHAARA_CONFIG_PATH, 'OPENROUTER_API_KEY=test-key\nOPENROUTER_MODEL=mistralai/test-model\n');
 process.env.GROQ_API_KEY = 'test-groq-key';
 const errors = [];
 let commands = 0;
+const islRequests = [];
 const Service = require('../src/mistral-service');
 Service.prototype.processCommand = async function(command) {
   commands++;
@@ -18,6 +19,14 @@ Service.prototype.processCommand = async function(command) {
 };
 // Deterministic API fixtures: integration tests never call paid external services.
 global.fetch = async (url, options) => {
+  if (String(url) === 'https://openrouter.ai/api/v1/chat/completions') {
+    const body = JSON.parse(options.body);
+    if (options.headers.Authorization !== 'Bearer updated-test-key' || body.model !== 'mistralai/updated-model' || body.response_format) throw Error('ISL did not use the configured OpenRouter plain-text request');
+    const prompt = body.messages[0].content;
+    islRequests.push(prompt);
+    const content = prompt.includes('ISL Gloss:') ? 'YOU NAME TYPE SUBMIT' : 'Enter your name. Submit the form.';
+    return { ok: true, json: async () => ({ choices: [{ message: { content } }] }) };
+  }
   if (String(url).includes('audio/transcriptions')) {
     if (!(options.body instanceof FormData)) throw Error('Expected native multipart FormData');
     return { ok: true, json: async () => ({ text: 'Test transcript' }) };
@@ -48,6 +57,23 @@ app.whenReady().then(async () => {
     results.push(name);
   }
   await run('state.muted = true');
+  await check('OpenRouter configuration loaded', `return (await window.electronAPI.getApiKey())==='test-key' && $('input-api-key').value.startsWith('•') && $('sel-model').value==='mistralai/test-model';`);
+  await check('OpenRouter settings persist', `await window.electronAPI.setApiKey('updated-test-key'); await window.electronAPI.setModel('mistralai/updated-model'); return (await window.electronAPI.getApiKey())==='updated-test-key' && (await window.electronAPI.getModel())==='mistralai/updated-model';`);
+  const savedConfig = fs.readFileSync(process.env.ISHAARA_CONFIG_PATH, 'utf8');
+  if (!savedConfig.includes('OPENROUTER_API_KEY="updated-test-key"') || !savedConfig.includes('OPENROUTER_MODEL="mistralai/updated-model"')) throw Error('OpenRouter settings not persisted');
+  if (process.argv.includes('--provider-only')) {
+    await check('OpenRouter chat IPC', `const result=await window.electronAPI.queryMistral({command:'test command',pageContext:null,history:[]}); return result.success&&result.data.speech==='Test response';`);
+    await check('Explain this Page summary, gloss and signing handoff', `
+      window.AvatarAnimator=function(){this.init=()=>{};this.signWithCaptions=(gloss,summary)=>{window.testSigning={gloss,summary};};this.stop=()=>{};};
+      $('tab-isl').click(); await sleep(100); $('isl-btn-explain').click();
+      for(let i=0;i<50&&!window.testSigning;i++) await sleep(100);
+      return window.testSigning?.gloss==='YOU NAME TYPE SUBMIT' && window.testSigning?.summary==='Enter your name. Submit the form.' && !$('isl-summary').hidden && $('isl-error').hidden && !$('isl-btn-stop').hidden;
+    `);
+    if (islRequests.length !== 2 || !islRequests[1].includes('Enter your name. Submit the form.')) throw Error('ISL summary did not flow into gloss conversion');
+    console.log(JSON.stringify({ passed: results, commands }, null, 2));
+    app.exit(0);
+    return;
+  }
   await check('settings open/close', `$('btn-settings').click(); const open=!$('settings-modal').hidden; $('close-settings').click(); return open && $('settings-modal').hidden;`);
   await check('panel hide/show', `$('btn-close-panel').click(); const closed=$('ai-panel').classList.contains('hidden'); $('btn-toggle-panel').click(); return closed&&!$('ai-panel').classList.contains('hidden');`);
   await check('drawer open/close', `$('btn-a11y').click(); const open=!$('a11y-drawer').hidden; $('close-a11y').click(); return open&&$('a11y-drawer').hidden;`);

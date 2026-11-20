@@ -1,30 +1,14 @@
 'use strict';
 /**
- * MistralService — wraps the Mistral AI API.
+ * Browser agent backed by OpenRouter chat completions.
  * Called from the main process only (Node environment).
  */
 
 class MistralService {
-  constructor(apiKeyConfig, model = 'mistral-medium-latest') {
+  constructor(apiKeyConfig, model = 'openrouter/auto') {
     this.apiKeys = (apiKeyConfig || '').split(',').map(k => k.trim()).filter(Boolean);
     this.keyIndex = 0;
     this.model  = model;
-    this._client = null;
-    this._initClient();
-  }
-
-  // ── Client lifecycle ─────────────────────────────────────────────────────
-
-  _initClient() {
-    if (this.apiKeys.length === 0) { this._client = null; return; }
-    try {
-      const { Mistral } = require('@mistralai/mistralai');
-      this._client = new Mistral({ apiKey: this.apiKeys[this.keyIndex] });
-      console.log(`[MistralService] Started with API Key index ${this.keyIndex} (out of ${this.apiKeys.length})`);
-    } catch (e) {
-      console.error('[MistralService] Failed to init client:', e.message);
-      this._client = null;
-    }
   }
 
   hasApiKey()       { return this.apiKeys.length > 0; }
@@ -32,13 +16,11 @@ class MistralService {
   updateApiKey(keyConfig) { 
     this.apiKeys = (keyConfig || '').split(',').map(k => k.trim()).filter(Boolean);
     this.keyIndex = 0; 
-    this._initClient(); 
   }
   
   rotateKey() {
     if (this.apiKeys.length <= 1) return false;
     this.keyIndex = (this.keyIndex + 1) % this.apiKeys.length;
-    this._initClient();
     return true;
   }
   setModel(model)   { this.model = model; }
@@ -140,7 +122,7 @@ Set "taskComplete": true ONLY when the task is fully done (page loaded, search c
   // ── Main Entry Point ─────────────────────────────────────────────────────
 
   async processCommand(command, pageContext, history = []) {
-    if (!this._client) throw new Error('Mistral client not initialised — check your API key.');
+    if (!this.hasApiKey()) throw new Error('No OpenRouter API key configured. Open Settings to add your key.');
 
     const systemPrompt = this._buildSystemPrompt(pageContext);
 
@@ -153,34 +135,52 @@ Set "taskComplete": true ONLY when the task is fully done (page loaded, search c
       { role: 'user',      content: command },
     ];
 
+    return this._parseJSON(await this.complete(messages, { json: true, maxTokens: 1200, temperature: 0.25 }));
+  }
+
+  async complete(messages, { json = false, maxTokens = 512, temperature = 0.2 } = {}) {
+    if (!this.hasApiKey()) throw new Error('No OpenRouter API key configured. Open Settings to add your key.');
     let retries = this.apiKeys.length;
     while (retries > 0) {
       try {
-        const response = await this._client.chat.complete({
-          model:          this.model,
-          messages,
-          responseFormat: { type: 'json_object' },
-          temperature:    0.25,
-          maxTokens:      1200,
+        const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${this.apiKeys[this.keyIndex]}`,
+            'Content-Type': 'application/json',
+            'X-OpenRouter-Title': 'Ishaara',
+          },
+          signal: AbortSignal.timeout(60000),
+          body: JSON.stringify({
+            model: this.model,
+            messages,
+            ...(json ? { response_format: { type: 'json_object' } } : {}),
+            temperature,
+            max_tokens: maxTokens,
+          }),
         });
-
-        const raw = response.choices[0].message.content;
-        return this._parseJSON(raw);
+        const data = await response.json();
+        if (!response.ok || data.error) {
+          const error = new Error(`OpenRouter request failed (${response.status}): ${data.error?.message || response.statusText || 'Unknown error'}`);
+          error.status = response.status;
+          throw error;
+        }
+        const raw = data.choices?.[0]?.message?.content;
+        if (typeof raw !== 'string' || !raw.trim()) throw new Error('OpenRouter returned an empty response. Try again or select another model.');
+        return raw.trim();
       } catch (err) {
-        if (err.message && String(err.message).includes('429')) {
-          console.warn(`[MistralService] 429 Rate Limit hit on key index ${this.keyIndex}.`);
+        if (err.status === 429) {
           if (this.rotateKey()) {
-            console.log(`[MistralService] Rotated to key index ${this.keyIndex}. Retrying...`);
             retries--;
             continue;
           } else {
-            throw new Error('Mistral rate limit exceeded (429). Wait before retrying and check your workspace usage limits in the Mistral console. New keys in the same workspace share its limits.');
+            throw new Error('OpenRouter rate limit exceeded (429). Wait before retrying and check your OpenRouter usage limits.');
           }
         }
         throw err;
       }
     }
-    throw new Error('All configured Mistral keys are rate limited (429). Wait before retrying and check their workspace usage limits in the Mistral console.');
+    throw new Error('All configured OpenRouter keys are rate limited (429). Wait before retrying and check your OpenRouter usage limits.');
   }
 
   // ── JSON Parsing (with fallback) ─────────────────────────────────────────

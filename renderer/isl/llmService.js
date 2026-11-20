@@ -1,6 +1,6 @@
 'use strict';
 /* ============================================================================
-   LLM Service — Groq API integration for ISL analysis.
+   LLM Service — OpenRouter integration for ISL analysis.
    Uses Electron IPC to keep API key secure in the main process.
    ============================================================================ */
 
@@ -57,8 +57,8 @@ window.ISL_LLM = {
       'Strict rules:\n- Base analysis ONLY on provided text/context.\n- Output ONLY the final concise summary paragraph.\n\n' +
       'Web page data (DOM Extraction):\n"""\n' + formText + '\n"""\n\nFinal Authoritative Concise Summary:';
 
-    var result = await window.electronAPI.groqQuery(prompt);
-    if (!result.success) throw new Error(result.error || 'Groq API error');
+    var result = await window.electronAPI.islQuery(prompt);
+    if (!result.success) throw new Error(result.error || 'OpenRouter API error');
     console.log('[ISL-LLM] Summary:', result.data);
     return result.data;
   },
@@ -80,8 +80,8 @@ window.ISL_LLM = {
       'Constraints:\n- Maximum 12 words total.\n- Output ONLY Gloss words in UPPERCASE separated by spaces.\n- No punctuation.\n\n' +
       'English: "' + summary + '"\n\nISL Gloss:';
 
-    var result = await window.electronAPI.groqQuery(prompt);
-    if (!result.success) throw new Error(result.error || 'Groq API error');
+    var result = await window.electronAPI.islQuery(prompt);
+    if (!result.success) throw new Error(result.error || 'OpenRouter API error');
     var gloss = (result.data || '').toUpperCase().trim();
     console.log('[ISL-LLM] Gloss:', gloss);
     return gloss;

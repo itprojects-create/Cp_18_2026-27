@@ -55,8 +55,8 @@ function createWindow() {
 app.whenReady().then(async () => {
   const MistralService = require('./src/mistral-service');
   mistralService = new MistralService(
-    process.env.MISTRAL_API_KEY || '',
-    process.env.MISTRAL_MODEL || 'mistral-small-latest'
+    process.env.OPENROUTER_API_KEY || '',
+    process.env.OPENROUTER_MODEL || 'openrouter/auto'
   );
 
   // ── Microphone permission — allow for renderer + webview ──────────────
@@ -88,7 +88,7 @@ app.on('window-all-closed', () => {
 ipcMain.handle('mistral:query', async (_event, { command, pageContext, history }) => {
   try {
     if (!mistralService || !mistralService.hasApiKey()) {
-      return { success: false, error: 'No Mistral API key configured. Open Settings to add your key.' };
+      return { success: false, error: 'No OpenRouter API key configured. Open Settings to add your key.' };
     }
     const data = await mistralService.processCommand(command, pageContext, history || []);
     return { success: true, data };
@@ -99,35 +99,25 @@ ipcMain.handle('mistral:query', async (_event, { command, pageContext, history }
 });
 
 // Config
-ipcMain.handle('config:getApiKey', () => process.env.MISTRAL_API_KEY || '');
+ipcMain.handle('config:getApiKey', () => process.env.OPENROUTER_API_KEY || '');
 ipcMain.handle('config:setApiKey', (_event, key) => {
-  key = setConfig('MISTRAL_API_KEY', key);
+  key = setConfig('OPENROUTER_API_KEY', key);
   if (mistralService) mistralService.updateApiKey(key);
   return true;
 });
-ipcMain.handle('config:getModel', () => process.env.MISTRAL_MODEL || 'mistral-small-latest');
+ipcMain.handle('config:getModel', () => process.env.OPENROUTER_MODEL || 'openrouter/auto');
 ipcMain.handle('config:setModel', (_event, model) => {
-  model = setConfig('MISTRAL_MODEL', model);
+  model = setConfig('OPENROUTER_MODEL', model);
   if (mistralService) mistralService.setModel(model);
   return true;
 });
 
-// Groq API (ISL Co-Pilot)
-ipcMain.handle('isl:groqQuery', async (_event, prompt) => {
+// ISL uses the same OpenRouter key and model as the browser agent.
+ipcMain.handle('isl:query', async (_event, prompt) => {
   try {
-    const apiKey = process.env.GROQ_API_KEY || '';
-    if (!apiKey) return { success: false, error: 'No Groq API key configured.' };
-    const model = process.env.GROQ_MODEL || 'llama-3.3-70b-versatile';
-    const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${apiKey}` },
-      body: JSON.stringify({
-        model, messages: [{ role: 'user', content: prompt }], temperature: 0.2, max_tokens: 512,
-      }),
-    });
-    if (!res.ok) { const err = await res.json().catch(() => ({})); return { success: false, error: err?.error?.message || `Groq API error ${res.status}` }; }
-    const data = await res.json();
-    return { success: true, data: (data.choices?.[0]?.message?.content ?? '').trim() };
+    if (!mistralService) return { success: false, error: 'The AI service is not ready. Try again.' };
+    const data = await mistralService.complete([{ role: 'user', content: prompt }]);
+    return { success: true, data };
   } catch (err) {
     return { success: false, error: err.message };
   }

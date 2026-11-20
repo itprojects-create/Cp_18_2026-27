@@ -394,19 +394,17 @@
     </div>
     <div class="modal-body">
       <div class="field-group">
-        <label for="input-api-key">Mistral API Key</label>
+        <label for="input-api-key">OpenRouter API Key</label>
         <div class="ia-row">
-          <input type="password" id="input-api-key" placeholder="sk-…" autocomplete="off" aria-label="Mistral API key" />
+          <input type="password" id="input-api-key" placeholder="sk-or-…" autocomplete="off" aria-label="OpenRouter API key" />
           <button id="btn-save-key" class="primary-btn">Save</button>
         </div>
-        <p class="field-hint">Get a free key at <a href="#" id="link-mistral" class="ext-link">console.mistral.ai ↗</a></p>
+        <p class="field-hint">Manage your key at <a href="#" id="link-mistral" class="ext-link">openrouter.ai/keys</a></p>
       </div>
       <div class="field-group">
         <label for="sel-model">AI Model</label>
         <select id="sel-model" aria-label="Model">
-          <option value="mistral-large-latest">Mistral Large (best)</option>
-          <option value="mistral-small-latest">Mistral Small (fast)</option>
-          <option value="open-mistral-7b">Mistral 7B (open)</option>
+          <option value="openrouter/auto">OpenRouter Auto</option>
         </select>
       </div>
       <hr style="border-color:var(--border);margin:4px 0;" />
@@ -429,7 +427,7 @@
       </div>
       <hr style="border-color:var(--border);margin:4px 0;" />
       <div class="field-group">
-        <label for="input-groq-key">Groq API Key (ISL Co-Pilot)</label>
+        <label for="input-groq-key">Groq API Key (Voice Transcription)</label>
         <div class="ia-row">
           <input type="password" id="input-groq-key" placeholder="gsk_…" autocomplete="off" aria-label="Groq API key" />
           <button id="btn-save-groq-key" class="primary-btn">Save</button>

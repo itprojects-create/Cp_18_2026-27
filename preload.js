@@ -12,7 +12,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
   setModel: (model) => ipcRenderer.invoke('config:setModel', model),
 
   // ── Groq (ISL Co-Pilot) ─────────────────────────────────────────────────
-  groqQuery: (prompt) => ipcRenderer.invoke('isl:groqQuery', prompt),
+  islQuery: (prompt) => ipcRenderer.invoke('isl:query', prompt),
   groqWhisper: (opts) => ipcRenderer.invoke('groq:whisper', opts),
   getGroqKey: () => ipcRenderer.invoke('config:getGroqKey'),
   setGroqKey: (key) => ipcRenderer.invoke('config:setGroqKey', key),
