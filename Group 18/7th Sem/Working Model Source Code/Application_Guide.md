@@ -6,9 +6,9 @@ VESIT, Department of Information Technology. Ishara is an Electron browser proto
 
 ## Semester documentation
 
-- [Group 18 documentation and completion register](Group%2018/README.md)
-- [6th Sem](Group%2018/6th%20Sem/README.md): synopsis, project logbook and project reports.
-- [7th Sem](Group%2018/7th%20Sem/README.md): black book, research paper, project logbook, demonstration video and working model source code.
+- [Group 18 documentation and completion register](../../README.md)
+- [6th Sem](../../6th%20Sem/README.md): synopsis, project logbook and project reports.
+- [7th Sem](../README.md): black book, research paper, project logbook, demonstration video and working model source code.
 
 The register distinguishes prepared documents, drafts, blank activity records and missing evidence. A folder or link does not mean the corresponding academic approval is complete.
 
@@ -26,6 +26,7 @@ Install Node.js and npm, then run:
 ```sh
 git clone https://github.com/itprojects-create/Cp_18_2026-27.git
 cd Cp_18_2026-27
+cd "Group 18/7th Sem/Working Model Source Code"
 npm ci
 ```
 

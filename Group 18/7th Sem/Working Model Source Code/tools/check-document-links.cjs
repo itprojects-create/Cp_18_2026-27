@@ -1,15 +1,15 @@
 'use strict';
 const fs = require('node:fs');
 const path = require('node:path');
-const root = path.resolve(__dirname, '..');
-const group = path.join(root, 'Group 18');
-const markdown = [path.join(root, 'README.md')];
+const group = path.resolve(__dirname, '../../..');
+const root = path.dirname(group);
+const markdown = [];
 const failures = [];
 let checked = 0;
 function walk(directory) {
   for (const item of fs.readdirSync(directory, { withFileTypes: true })) {
     const file = path.join(directory, item.name);
-    if (item.isDirectory()) walk(file);
+    if (item.isDirectory()) { if (!['node_modules', '.git', 'dist', 'dist-ssr'].includes(item.name)) walk(file); }
     else if (item.name.endsWith('.md')) markdown.push(file);
     else if (/\.(pdf|docx)$/.test(item.name) && fs.statSync(file).size === 0) failures.push(`Empty document: ${path.relative(root, file)}`);
   }

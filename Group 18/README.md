@@ -24,7 +24,7 @@ Documentation prepared: **20 November 2026**
 | 7th | Research Paper | [PDF](7th%20Sem/Research%20Paper/Ishara_Research_Paper.pdf) · [Word](7th%20Sem/Research%20Paper/Ishara_Research_Paper.docx) | Supplied manuscript formatted with the VESIT header; publication or acceptance not verified |
 | 7th | Project Logbook | [PDF](7th%20Sem/Project%20Logbook/Ishara_7th_Sem_Project_Logbook.pdf) · [Word](7th%20Sem/Project%20Logbook/Ishara_7th_Sem_Project_Logbook.docx) | Blank record template; actual dates, activities and mentor sign-off pending |
 | 7th | Project Demonstration Video 3 minutes | [Video submission and recording plan](7th%20Sem/Project%20Demonstration%20Video/README.md) | Missing; no recording or video URL supplied |
-| 7th | Working Model Source Code | [Source code access](7th%20Sem/Working%20Model%20Source%20Code/README.md) | Available at the repository root; includes current OpenRouter fixes |
+| 7th | Working Model Source Code | [Source code access](7th%20Sem/Working%20Model%20Source%20Code/README.md) | Complete app source inside this semester folder; includes current OpenRouter fixes |
 
 ## Evidence and document handling
 
