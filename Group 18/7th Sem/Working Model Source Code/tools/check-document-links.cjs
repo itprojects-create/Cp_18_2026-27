@@ -11,7 +11,8 @@ function walk(directory) {
     const file = path.join(directory, item.name);
     if (item.isDirectory()) { if (!['node_modules', '.git', 'dist', 'dist-ssr'].includes(item.name)) walk(file); }
     else if (item.name.endsWith('.md')) markdown.push(file);
-    else if (/\.(pdf|docx)$/.test(item.name) && fs.statSync(file).size === 0) failures.push(`Empty document: ${path.relative(root, file)}`);
+    else if (/\.(docx|doc|odt)$/i.test(item.name)) failures.push(`Keep editable academic files outside the repository: ${path.relative(root, file)}`);
+    else if (/\.pdf$/i.test(item.name) && fs.statSync(file).size === 0) failures.push(`Empty PDF: ${path.relative(root, file)}`);
   }
 }
 walk(group);
@@ -26,4 +27,4 @@ for (const file of markdown) {
   }
 }
 if (failures.length) { console.error(failures.join('\n')); process.exitCode = 1; }
-else console.log(`PASS: ${checked} relative links resolve across ${markdown.length} indexes; no empty PDF or Word documents.`);
+else console.log(`PASS: ${checked} relative links resolve across ${markdown.length} indexes; no empty PDFs or uploaded Word documents.`);

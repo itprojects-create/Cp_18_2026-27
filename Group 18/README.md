@@ -1,48 +1,58 @@
-# Group 18
+# Group 18 — Ishara
 
-VESIT — Department of Information Technology
+VESIT, Department of Information Technology. Project started **12 March 2026**. Documentation updated **21 November 2026**.
 
-Project: **Ishara**
+## Project members
 
-Repository: [Cp_18_2026-27](https://github.com/itprojects-create/Cp_18_2026-27)
+The roster and roll numbers below follow the supplied capstone cover and certificate.
 
-Documentation prepared: **20 November 2026**
+| Roll number | Member |
+| --- | --- |
+| 08 | Siddharth Gupta |
+| 14 | Afnan Kazi |
+| 03 | Rutuja Bhalekar |
+| 48 | Ritika Katariya |
 
-## Semester folders
+Project mentor: **Prof. Vidya Pujari**. The research paper retains its supplied author list, including the mentor. Git commit attribution remains separate from academic project membership.
 
-- [6th Sem](6th%20Sem/README.md)
-- [7th Sem](7th%20Sem/README.md)
+## Semester folders and PDF documents
 
-## Completion register
+- [6th Sem](6th%20Sem/README.md) — 12 March to 25 June 2026.
+- [7th Sem](7th%20Sem/README.md) — 2 July to 19 November 2026.
 
-| Semester | Required item | File or link | Status |
+| Semester | Required item | Document or access | Status |
 | --- | --- | --- | --- |
-| 6th | Project Synopsis | [PDF](6th%20Sem/Project%20Synopsis/Ishara_Project_Synopsis.pdf) · [Word](6th%20Sem/Project%20Synopsis/Ishara_Project_Synopsis.docx) | Prepared; guide review pending |
-| 6th | Project Logbook | [PDF](6th%20Sem/Project%20Logbook/Ishara_6th_Sem_Project_Logbook.pdf) · [Word](6th%20Sem/Project%20Logbook/Ishara_6th_Sem_Project_Logbook.docx) | Blank record template; actual dates, activities and mentor sign-off pending |
-| 6th | Project Reports | [Design report PDF](6th%20Sem/Project%20Reports/Ishara_Project_Design_Report.pdf) · [Word](6th%20Sem/Project%20Reports/Ishara_Project_Design_Report.docx) | Prepared from current materials; not evidence of historical semester completion |
-| 7th | Final Project Report Black Book | [PDF](7th%20Sem/Final%20Project%20Report/Ishara_Final_Project_Report_Black_Book.pdf) · [Word](7th%20Sem/Final%20Project%20Report/Ishara_Final_Project_Report_Black_Book.docx) | Reconstructed draft; the supplied capstone PDF was empty; institutional format, team details and approval pending |
-| 7th | Research Paper | [PDF](7th%20Sem/Research%20Paper/Ishara_Research_Paper.pdf) · [Word](7th%20Sem/Research%20Paper/Ishara_Research_Paper.docx) | Supplied manuscript formatted with the VESIT header; publication or acceptance not verified |
-| 7th | Project Logbook | [PDF](7th%20Sem/Project%20Logbook/Ishara_7th_Sem_Project_Logbook.pdf) · [Word](7th%20Sem/Project%20Logbook/Ishara_7th_Sem_Project_Logbook.docx) | Blank record template; actual dates, activities and mentor sign-off pending |
-| 7th | Project Demonstration Video 3 minutes | [Video submission and recording plan](7th%20Sem/Project%20Demonstration%20Video/README.md) | Missing; no recording or video URL supplied |
-| 7th | Working Model Source Code | [Source code access](7th%20Sem/Working%20Model%20Source%20Code/README.md) | Complete app source inside this semester folder; includes current OpenRouter fixes |
+| 6th | Project Synopsis | [PDF](6th%20Sem/Project%20Synopsis/Ishara_Project_Synopsis.pdf) | Full four-member roster corrected; guide review pending |
+| 6th | Project Logbook | [PDF](6th%20Sem/Project%20Logbook/Ishara_6th_Sem_Project_Logbook.pdf) | Sample format; W01–W16, beginning 12 March 2026; mentor verification pending |
+| 6th | Project Reports | [Design report PDF](6th%20Sem/Project%20Reports/Ishara_Project_Design_Report.pdf) | Full four-member roster corrected; guide review pending |
+| 7th | Final Project Report Black Book | [PDF](7th%20Sem/Final%20Project%20Report/Ishara_Final_Project_Report_Black_Book.pdf) | Supplied 39-page capstone report, with VESIT headers; replaces the reconstructed draft |
+| 7th | Research Paper | [PDF](7th%20Sem/Research%20Paper/Ishara_Research_Paper.pdf) | Supplied manuscript with VESIT headers; publication/acceptance not verified |
+| 7th | Project Logbook | [PDF](7th%20Sem/Project%20Logbook/Ishara_7th_Sem_Project_Logbook.pdf) | Sample format; W17–W37, July–November 2026; mentor verification pending |
+| 7th | Demonstration Video 3 minutes | [Recording plan and submission](7th%20Sem/Project%20Demonstration%20Video/README.md) | Video or accessible video link still required |
+| 7th | Working Model Source Code | [Complete source and run instructions](7th%20Sem/Working%20Model%20Source%20Code/README.md) | Maintained in this folder; OpenRouter Agent and ISL fixes included |
 
-## Evidence and document handling
+## Logbook format and timeline
 
-- The institutional header was extracted from the supplied sample logbook. Other teams' names, project details, mentor signatures and dated activities were not reused.
-- The sixth-semester synopsis and design report were prepared from the manuscript and current source. They are not backdated activity records.
-- The black book is a review draft reconstructed from the readable manuscript and current implementation because `ISHARA_Capstone_Report (2).pdf` had a size of 0 bytes. Replace or reconcile it with the valid approved report when available.
-- The research paper preserves the supplied manuscript's author list, tables, figures, pilot results and declarations. Its repository URL was updated to this maintained repository and a VESIT header was added. Its implementation section describes an older stack; the black book documents this checkout. The manuscript's reported 88% pilot result is not a new benchmark of the OpenRouter build.
-- Group covers use Afnan Mohammed Kazi and Siddharth Gupta from this chat's project instructions. The guide name is taken from the supplied manuscript. Confirm the official team roster, roll numbers, semester periods and approval requirements with the department.
-- No dates of work, meetings, approvals or signatures have been invented. Blank logbook rows must be completed with actual evidence.
-- The original attachments remain unchanged at their supplied locations. They are not copied into unrelated semester submissions.
+Both logbooks follow the supplied example: project cover, the same institutional vision/mission, program outcomes, course outcomes and mapping, student details, and weekly Project Progress Report tables with mentor remarks and signature columns. The sample's unrelated project names and people are excluded.
 
-## Team completion checklist
+The start date is supplied by the team. The weekly Thursday schedule and March–June / July–November semester split are reconstructed for review; exact historical meeting and completion dates were not provided. Entries use **Plan:** wording, as in the example, and follow Ishara's problem definition, literature review, requirements, architecture, browser and DOM implementation, accessibility, speech, ISL, verification, manuscript and submission work. Later OpenRouter fixes are review tasks, not claims that those repairs occurred on an invented historical date.
 
-- [ ] Supply the valid capstone report and reconcile the reconstructed black book.
-- [ ] Confirm the official Group 18 roster, roll numbers, guide and semester dates.
-- [ ] Have the synopsis and project reports reviewed by the guide.
-- [ ] Complete both logbooks with actual dates, work, evidence links and mentor remarks/signatures.
-- [ ] Review the research manuscript's stack description and publication status.
-- [ ] Record and link the 3-minute working-model demonstration.
-- [ ] Review the outstanding tab-navigation smoke-test errors.
-- [ ] Recheck all links after replacing documents; keep `.env` and credentials private.
+Class and contact fields, mentor remarks, and signatures are intentionally unfilled. No signatures or meeting approvals have been fabricated. The team and mentor must verify the weekly chronology before treating the logbooks as completed records.
+
+## Document provenance and remaining work
+
+- Academic deliverables are maintained as PDFs only. Earlier Word working copies have been removed from the current GitHub tree; local backups are outside the repository. Source code and navigation READMEs remain available.
+- The black book now comes from the readable `capstone.pdf` supplied by the team. All 39 pages, the four-member roster, figures, tables and appendix are retained. Institutional headers were added without rewriting the report. The supplied original remains unchanged.
+- The synopsis and design report covers now match the full capstone roster. Their body content remains a derived project document for guide review.
+- The manuscript and capstone describe an older technology stack. The current app uses OpenRouter for Agent and ISL language requests; consult the [application guide](7th%20Sem/Working%20Model%20Source%20Code/Application_Guide.md) for current code and test status.
+- The supplied documents contain preliminary or planned evaluation statements. They do not establish formal target-user usability, signing accuracy, or accessibility certification.
+
+## Completion checklist
+
+- [ ] Team and mentor verify the reconstructed weekly dates and activities.
+- [ ] Add class/contact details and obtain genuine mentor remarks and signatures.
+- [ ] Obtain guide review and required academic approvals.
+- [ ] Review research manuscript publication status and historical stack descriptions.
+- [ ] Record and link the actual 3-minute demonstration.
+- [ ] Review outstanding tab-navigation smoke-test errors.
+- [ ] Keep credentials private and run the document-link checker after future replacements.
